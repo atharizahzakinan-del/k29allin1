@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K29 — All in One</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-1: #0b1a3a;
+    --bg-2: #050814;
+    --bg-3: #000000;
+    --card-bg: rgba(10, 20, 45, 0.7);
+    --card-border: rgba(90, 140, 255, 0.3);
+    --text: #e6ecff;
+    --text-soft: #a9c4ff;
+    --text-muted: #5a7099;
+    --input-bg: rgba(20, 40, 90, 0.5);
+    --input-border: rgba(90, 140, 255, 0.4);
+    --btn-bg: rgba(60, 110, 255, 0.2);
+    --btn-border: rgba(90, 140, 255, 0.45);
+    --accent: #5a9bff;
+    --glow: rgba(60, 120, 255, 0.25);
+    --star: #ffffff;
+    --done: #5a7099;
+    --danger: #ff5a7a;
+    --warn: #ffc94d;
+    --hijau: #4dff9a;
+    --hijau-bg: rgba(77, 255, 154, 0.15);
+    --label-jurnal: #5a9bff;
+    --label-curhat: #ff8fa8;
+    --label-ide: #ffc94d;
+    --label-lain: #a78bfa;
+    --grafik-garis: #5a9bff;
+    --grafik-area-1: rgba(90, 155, 255, 0.35);
+    --grafik-area-2: rgba(90, 155, 255, 0);
+  }
+
+  html.light {
+    --bg-1: #dbe7ff;
+    --bg-2: #eef4ff;
+    --bg-3: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-border: rgba(70, 120, 220, 0.25);
+    --text: #10203f;
+    --text-soft: #34549a;
+    --text-muted: #7a8db3;
+    --input-bg: rgba(220, 233, 255, 0.7);
+    --input-border: rgba(70, 120, 220, 0.35);
+    --btn-bg: rgba(90, 140, 255, 0.15);
+    --btn-border: rgba(70, 120, 220, 0.35);
+    --accent: #2f6fe0;
+    --glow: rgba(90, 140, 255, 0.2);
+    --star: #5a8cff;
+    --done: #9aa9c4;
+    --danger: #e0355a;
+    --warn: #d99a00;
+    --hijau: #1a9e5a;
+    --hijau-bg: rgba(26, 158, 90, 0.12);
+    --label-jurnal: #2f6fe0;
+    --label-curhat: #e0355a;
+    --label-ide: #d99a00;
+    --label-lain: #7c5cf0;
+    --grafik-garis: #2f6fe0;
+    --grafik-area-1: rgba(70, 130, 230, 0.3);
+    --grafik-area-2: rgba(70, 130, 230, 0);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: radial-gradient(ellipse at top, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    transition: background 0.5s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, var(--star), transparent),
+      radial-gradient(1px 1px at 70% 20%, var(--star), transparent),
+      radial-gradient(1.3px 1.3px at 40% 70%, var(--star), transparent),
+      radial-gradient(1px 1px at 85% 60%, var(--star), transparent),
+      radial-gradient(1px 1px at 10% 80%, var(--star), transparent),
+      radial-gradient(1.3px 1.3px at 60% 90%, var(--star), transparent),
+      radial-gradient(1px 1px at 90% 15%, var(--star), transparent);
+    opacity: 0.6;
+    animation: twinkle 5s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.3; }
+    to   { opacity: 0.8; }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+    background: linear-gradient(90deg, var(--accent), var(--text));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.5px;
+  }
+
+  .mode-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.25s ease;
+    line-height: 1;
+  }
+
+  .mode-btn:hover {
+    transform: rotate(15deg) scale(1.08);
+    box-shadow: 0 0 14px var(--glow);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 6px;
+    backdrop-filter: blur(10px);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 11px 6px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--text-soft);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 16px var(--glow);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .sub-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 5px;
+    backdrop-filter: blur(10px);
+  }
+
+  .sub-btn {
+    flex: 1;
+    padding: 9px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--text-soft);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+  }
+
+  .sub-btn.active {
+    background: var(--btn-bg);
+    color: var(--text);
+    border: 1px solid var(--btn-border);
+  }
+
+  .sub-content { display: none; }
+  .sub-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* ===== TUGAS ===== */
+  .stats {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px var(--glow);
+  }
+
+  .stats-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .stats-top strong { color: var(--text); }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--input-bg);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), #7fb0ff);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 10px var(--glow);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px var(--glow);
+  }
+
+  .form-row { display: flex; gap: 10px; }
+
+  input[type="text"], input[type="date"], input[type="number"], input[type="datetime-local"] {
+    flex: 1;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s ease;
+    min-width: 0;
+  }
+
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--glow);
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    color: var(--text);
+    outline: none;
+    resize: vertical;
+    min-height: 90px;
+    transition: border-color 0.2s ease;
+  }
+
+  textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--glow);
+  }
+
+  .btn-add {
+    padding: 12px 20px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn-add:hover {
+    background: #4a8bf0;
+    box-shadow: 0 0 18px var(--glow);
+    transform: translateY(-1px);
+  }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--btn-bg);
+    color: var(--text-soft);
+    border: 1px solid var(--btn-border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn:hover { background: rgba(90, 155, 255, 0.25); }
+
+  .filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 14px var(--glow);
+  }
+
+  .list { display: flex; flex-direction: column; gap: 10px; }
+
+  .task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+    animation: masuk 0.3s ease;
+  }
+
+  @keyframes masuk {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .task:hover {
+    border-color: var(--btn-border);
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .task.done { opacity: 0.6; }
+  .task.done .task-text { text-decoration: line-through; color: var(--done); }
+  .task.important { border-left: 3px solid var(--warn); }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--btn-border);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: transparent;
+    transition: all 0.2s ease;
+  }
+
+  .task-check:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--glow);
+  }
+
+  .task.done .task-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .task-content { flex: 1; min-width: 0; }
+
+  .task-text {
+    font-size: 14.5px;
+    color: var(--text);
+    word-break: break-word;
+    margin-bottom: 2px;
+  }
+
+  .task-meta {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .task-meta .deadline.lewat { color: var(--danger); font-weight: 600; }
+
+  .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
+  }
+
+  .icon-btn:hover { background: var(--btn-bg); border-color: var(--btn-border); }
+  .icon-btn.star:hover, .icon-btn.star.active { color: var(--warn); }
+  .icon-btn.del:hover { color: var(--danger); background: rgba(255, 90, 122, 0.15); }
+
+  .edit-input {
+    width: 100%;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    color: var(--text);
+    outline: none;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .empty .ikon { font-size: 48px; margin-bottom: 12px; opacity: 0.6; }
+
+  .bottom-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-sekunder {
+    flex: 1;
+    padding: 11px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--btn-bg);
+    color: var(--text-soft);
+    border: 1px solid var(--btn-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+  }
+
+  .btn-sekunder:hover { background: rgba(90, 155, 255, 0.25); color: var(--text); }
+  .btn-sekunder.danger:hover { background: rgba(255, 90, 122, 0.2); color: var(--danger); border-color: var(--danger); }
+
+  /* ===== CATATAN ===== */
+  .label-select {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .label-opt {
+    padding: 9px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--btn-bg);
+    color: var(--text-soft);
+    border: 1px solid var(--btn-border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .label-opt:hover { background: rgba(90, 155, 255, 0.25); }
+
+  .label-opt.active {
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 0 14px var(--glow);
+  }
+
+  .label-opt.active[data-label="jurnal"] { background: var(--label-jurnal); }
+  .label-opt.active[data-label="curhat"] { background: var(--label-curhat); }
+  .label-opt.active[data-label="ide"] { background: var(--label-ide); color: #000; }
+  .label-opt.active[data-label="lain"] { background: var(--label-lain); }
+
+  .catatan-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .catatan-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+    animation: masuk 0.3s ease;
+  }
+
+  .catatan-card:hover {
+    border-color: var(--btn-border);
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .catatan-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .catatan-judul {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--text);
+    word-break: break-word;
+    flex: 1;
+  }
+
+  .catatan-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .catatan-label.jurnal { background: rgba(90,155,255,0.2); color: var(--label-jurnal); }
+  .catatan-label.curhat { background: rgba(255,143,168,0.2); color: var(--label-curhat); }
+  .catatan-label.ide { background: rgba(255,201,77,0.2); color: var(--label-ide); }
+  .catatan-label.lain { background: rgba(167,139,250,0.2); color: var(--label-lain); }
+
+  html.light .catatan-label.ide { color: #a06e00; }
+
+  .catatan-isi {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-soft);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 10px;
+  }
+
+  .catatan-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .catatan-tgl {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .catatan-actions { display: flex; gap: 4px; }
+
+  /* ===== TABUNGAN ===== */
+  .saldo-card {
+    background: linear-gradient(135deg, rgba(60, 130, 255, 0.25), rgba(20, 40, 90, 0.5));
+    border: 1px solid var(--btn-border);
+    border-radius: 20px;
+    padding: 26px 22px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px var(--glow);
+    text-align: center;
+  }
+
+  html.light .saldo-card {
+    background: linear-gradient(135deg, rgba(120, 170, 255, 0.3), rgba(220, 235, 255, 0.8));
+  }
+
+  .saldo-label {
+    font-size: 12.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+  }
+
+  .saldo-angka {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #7fb0ff, var(--text), #7fb0ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .saldo-sub {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .target-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+  }
+
+  .target-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .target-head strong { color: var(--text); }
+
+  .target-edit-btn {
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .target-edit-btn:hover { background: rgba(90, 155, 255, 0.25); color: var(--text); }
+
+  .sisa-target {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--text-soft);
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .sisa-target.tercapai { color: var(--hijau); }
+
+  /* ===== GRAFIK ===== */
+  .grafik-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+  }
+
+  .grafik-judul {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .grafik-judul .skrg {
+    font-size: 12px;
+    color: var(--text-soft);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  .grafik-svg {
+    width: 100%;
+    height: 140px;
+    display: block;
+    overflow: visible;
+  }
+
+  .grafik-info {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* ===== NABUNG FORM ===== */
+  .nabung-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+  }
+
+  .nabung-form .form-row { align-items: stretch; }
+
+  .btn-masuk {
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--hijau-bg);
+    color: var(--hijau);
+    border: 1px solid var(--hijau);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn-masuk:hover {
+    background: var(--hijau);
+    color: #000;
+    box-shadow: 0 0 18px rgba(77, 255, 154, 0.4);
+  }
+
+  .btn-keluar {
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(255, 90, 122, 0.12);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn-keluar:hover {
+    background: var(--danger);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(255, 90, 122, 0.4);
+  }
+
+  /* toast */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--card-bg);
+    border: 1px solid var(--hijau);
+    color: var(--text);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    box-shadow: 0 0 30px rgba(77, 255, 154, 0.4);
+    backdrop-filter: blur(14px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s ease;
+    max-width: 90%;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast.merah {
+    border-color: var(--danger);
+    box-shadow: 0 0 30px rgba(255, 90, 122, 0.4);
+  }
+
+  .riwayat-judul {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .riwayat { display: flex; flex-direction: column; gap: 8px; }
+
+  .riwayat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    animation: masuk 0.3s ease;
+  }
+
+  .riwayat-ikon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .riwayat-ikon.masuk { background: var(--hijau-bg); color: var(--hijau); }
+  .riwayat-ikon.keluar { background: rgba(255, 90, 122, 0.15); color: var(--danger); }
+
+  .riwayat-info { flex: 1; min-width: 0; }
+  .riwayat-ket {
+    font-size: 13.5px;
+    color: var(--text);
+    margin-bottom: 2px;
+    word-break: break-word;
+  }
+  .riwayat-tgl { font-size: 11px; color: var(--text-muted); }
+
+  .riwayat-nominal {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .riwayat-nominal.masuk { color: var(--hijau); }
+  .riwayat-nominal.keluar { color: var(--danger); }
+
+  .riwayat-del {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .riwayat-del:hover { color: var(--danger); background: rgba(255, 90, 122, 0.12); }
+
+  /* ===== COUNTDOWN ===== */
+  .countdown-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+  }
+
+  .countdown-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .cd-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+    animation: masuk 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cd-card:hover {
+    border-color: var(--btn-border);
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .cd-card.lewat {
+    border-color: var(--hijau);
+    background: var(--hijau-bg);
+  }
+
+  .cd-nama {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    word-break: break-word;
+    padding-right: 32px;
+  }
+
+  .cd-tgl {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .cd-angka {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .cd-blok {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 12px 6px;
+    text-align: center;
+  }
+
+  .cd-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cd-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .cd-lewat-teks {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--hijau);
+    padding: 6px 0;
+  }
+
+  .cd-del {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+
+  .cd-del:hover { color: var(--danger); background: rgba(255, 90, 122, 0.15); }
+
+  /* modal */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-bg.show { display: flex; }
+
+  .modal {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    max-width: 380px;
+    width: 100%;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal h3 {
+    font-size: 17px;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .modal input {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .modal-actions { display: flex; gap: 10px; }
+
+  .modal-actions button {
+    flex: 1;
+    padding: 11px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-batal {
+    background: var(--btn-bg);
+    color: var(--text-soft);
+    border: 1px solid var(--btn-border);
+  }
+  .btn-batal:hover { background: rgba(255, 90, 122, 0.15); color: var(--danger); }
+
+  .btn-simpan {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+  }
+  .btn-simpan:hover { background: #4a8bf0; box-shadow: 0 0 16px var(--glow); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1>🌟 K29 — All in One</h1>
+      <button class="mode-btn" id="modeBtn" title="Ganti mode">🌙</button>
+    </div>
+
+    <!-- tab utama -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="catatan">📝 Catatan</button>
+      <button class="tab-btn" data-tab="nabung">💰 Nabung</button>
+      <button class="tab-btn" data-tab="hitung">🎂 Hitung</button>
+    </div>
+
+    <!-- ===== TAB CATATAN ===== -->
+    <div class="tab-content active" id="tab-catatan">
+      <div class="sub-toggle">
+        <button class="sub-btn active" data-sub="tugas">✅ Tugas</button>
+        <button class="sub-btn" data-sub="catatan">📖 Catatan</button>
+      </div>
+
+      <!-- sub tugas -->
+      <div class="sub-content active" id="sub-tugas">
+        <div class="stats">
+          <div class="stats-top">
+            <span>Tugas: <strong id="total">0</strong></span>
+            <span>Selesai: <strong id="selesai">0</strong></span>
+            <span>Progress: <strong id="persen">0%</strong></span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="form">
+          <div class="form-row">
+            <input type="text" id="inputTugas" placeholder="Mau ngapain hari ini?" maxlength="120" />
+            <button class="btn-add" id="btnTambah">➕</button>
+          </div>
+          <div class="form-row">
+            <input type="date" id="inputTanggal" />
+          </div>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Semua</button>
+          <button class="filter-btn" data-filter="active">Aktif</button>
+          <button class="filter-btn" data-filter="done">Selesai</button>
+          <button class="filter-btn" data-filter="important">⭐ Penting</button>
+        </div>
+
+        <div class="list" id="list"></div>
+
+        <div class="bottom-actions">
+          <button class="btn-sekunder" id="btnHapusSelesai">🧹 Hapus yang selesai</button>
+          <button class="btn-sekunder danger" id="btnHapusSemua">🗑️ Hapus semua</button>
+        </div>
+      </div>
+
+      <!-- sub catatan -->
+      <div class="sub-content" id="sub-catatan">
+        <div class="form">
+          <div class="form-row">
+            <input type="text" id="inputJudul" placeholder="Judul catatan..." maxlength="80" />
+          </div>
+          <div class="form-row">
+            <textarea id="inputIsi" placeholder="Tulis di sini... bisa curhat, jurnal, ide, atau apa aja 💭" maxlength="3000"></textarea>
+          </div>
+          <div class="label-select" id="labelSelect">
+            <button class="label-opt active" data-label="jurnal">📖 Jurnal</button>
+            <button class="label-opt" data-label="curhat">💬 Curhat</button>
+            <button class="label-opt" data-label="ide">💡 Ide</button>
+            <button class="label-opt" data-label="lain">📝 Lainnya</button>
+          </div>
+          <div class="form-row">
+            <button class="btn-add" id="btnTambahCatatan" style="width:100%;">➕ Simpan Catatan</button>
+          </div>
+        </div>
+
+        <div class="catatan-list" id="catatanList"></div>
+
+        <div class="bottom-actions">
+          <button class="btn-sekunder danger" id="btnHapusSemuaCatatan">🗑️ Hapus semua catatan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB NABUNG ===== -->
+    <div class="tab-content" id="tab-nabung">
+      <div class="saldo-card">
+        <div class="saldo-label">💎 Total Tabungan</div>
+        <div class="saldo-angka" id="saldoAngka">Rp0</div>
+        <div class="saldo-sub" id="saldoSub">Belum ada tabungan. Yuk mulai! 🌱</div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <span>🎯 Target: <strong id="targetTeks">Belum diset</strong></span>
+          <button class="target-edit-btn" id="btnEditTarget">Ubah</button>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="targetFill"></div>
+        </div>
+        <div class="sisa-target" id="sisaTarget"></div>
+      </div>
+
+      <!-- grafik -->
+      <div class="grafik-card">
+        <div class="grafik-judul">
+          <span>📊 Grafik Tabungan</span>
+          <span class="skrg" id="grafikSkrg">Rp0</span>
+        </div>
+        <svg class="grafik-svg" id="grafikSvg" preserveAspectRatio="none"></svg>
+        <div class="grafik-info" id="grafikInfo">Belum ada data</div>
+      </div>
+
+      <div class="nabung-form">
+        <div class="form-row">
+          <input type="text" id="inputKet" placeholder="Keterangan (misal: nabung jajan)" maxlength="60" />
+        </div>
+        <div class="form-row">
+          <input type="number" id="inputNominal" placeholder="Nominal (Rp)" min="1" />
+        </div>
+        <div class="form-row">
+          <button class="btn-masuk" id="btnMasuk">➕ Nabung</button>
+          <button class="btn-keluar" id="btnKeluar">➖ Tarik</button>
+        </div>
+      </div>
+
+      <div class="riwayat-judul">📋 Riwayat</div>
+      <div class="riwayat" id="riwayat"></div>
+    </div>
+
+    <!-- ===== TAB HITUNG MUNDUR ===== -->
+    <div class="tab-content" id="tab-hitung">
+      <div class="countdown-form">
+        <div class="form-row">
+          <input type="text" id="inputCdNama" placeholder="Nama event (misal: Ulang tahun)" maxlength="60" />
+        </div>
+        <div class="form-row">
+          <input type="datetime-local" id="inputCdTgl" />
+        </div>
+        <div class="form-row">
+          <button class="btn-add" id="btnTambahCd" style="width:100%;">➕ Tambah Hitung Mundur</button>
+        </div>
+      </div>
+
+      <div class="countdown-list" id="countdownList"></div>
+    </div>
+  </div>
+
+  <!-- modal target -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal">
+      <h3>🎯 Set Target Tabungan</h3>
+      <input type="text" id="modalNamaTarget" placeholder="Nama target (misal: Beli buku)" maxlength="50" />
+      <input type="number" id="modalNominalTarget" placeholder="Nominal target (Rp)" min="1" />
+      <div class="modal-actions">
+        <button class="btn-batal" id="btnBatalTarget">Batal</button>
+        <button class="btn-simpan" id="btnSimpanTarget">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ================= DATA =================
+    let tasks = JSON.parse(localStorage.getItem('tasks_k') || '[]');
+    let riwayat = JSON.parse(localStorage.getItem('riwayat_k') || '[]');
+    let target = JSON.parse(localStorage.getItem('target_k') || 'null');
+    let catatan = JSON.parse(localStorage.getItem('catatan_k') || '[]');
+    let countdown = JSON.parse(localStorage.getItem('countdown_k') || '[]');
+    let filterAktif = 'all';
+    let labelAktif = 'jurnal';
+
+    // ================= UTIL =================
+    function rupiah(n) {
+      return 'Rp' + Math.abs(n).toLocaleString('id-ID');
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function tanggalSekarang() {
+      const d = new Date();
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+        + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    const toastEl = document.getElementById('toast');
+    let toastTimer = null;
+    function tampilToast(pesan, merah) {
+      toastEl.textContent = pesan;
+      toastEl.classList.toggle('merah', !!merah);
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+    }
+
+    // ================= TUGAS =================
+    const list = document.getElementById('list');
+    const inputTugas = document.getElementById('inputTugas');
+    const inputTanggal = document.getElementById('inputTanggal');
+    const btnTambah = document.getElementById('btnTambah');
+    const totalEl = document.getElementById('total');
+    const selesaiEl = document.getElementById('selesai');
+    const persenEl = document.getElementById('persen');
+    const progressFill = document.getElementById('progressFill');
+
+    function simpanTasks() { localStorage.setItem('tasks_k', JSON.stringify(tasks)); }
+
+    function renderTasks() {
+      let tampil = tasks.filter(t => {
+        if (filterAktif === 'active') return !t.done;
+        if (filterAktif === 'done') return t.done;
+        if (filterAktif === 'important') return t.important;
+        return true;
+      });
+
+      tampil.sort((a, b) => {
+        if (a.important !== b.important) return a.important ? -1 : 1;
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+        if (a.deadline) return -1;
+        if (b.deadline) return 1;
+        return b.id - a.id;
+      });
+
+      list.innerHTML = '';
+
+      if (tampil.length === 0) {
+        list.innerHTML = `
+          <div class="empty">
+            <div class="ikon">📭</div>
+            <div>Belum ada tugas di sini.<br>Tambahkan yang baru di atas! ✨</div>
+          </div>`;
+      } else {
+        tampil.forEach(t => {
+          const el = document.createElement('div');
+          el.className = 'task' + (t.done ? ' done' : '') + (t.important ? ' important' : '');
+          el.dataset.id = t.id;
+
+          let deadlineHtml = '';
+          if (t.deadline) {
+            const tgl = new Date(t.deadline + 'T00:00:00');
+            const tglStr = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+            const lewat = !t.done && t.deadline < new Date().toISOString().slice(0, 10);
+            deadlineHtml = `<span class="deadline ${lewat ? 'lewat' : ''}">📅 ${tglStr}${lewat ? ' (lewat)' : ''}</span>`;
+          }
+
+          el.innerHTML = `
+            <button class="task-check" data-action="toggle" title="Tandai selesai">✓</button>
+            <div class="task-content">
+              <div class="task-text">${escapeHtml(t.text)}</div>
+              <div class="task-meta">${deadlineHtml}</div>
+            </div>
+            <div class="task-actions">
+              <button class="icon-btn star ${t.important ? 'active' : ''}" data-action="star" title="Penting">⭐</button>
+              <button class="icon-btn" data-action="edit" title="Edit">✏️</button>
+              <button class="icon-btn del" data-action="del" title="Hapus">🗑️</button>
+            </div>
+          `;
+          list.appendChild(el);
+        });
+      }
+
+      updateStats();
+      simpanTasks();
+    }
+
+    function updateStats() {
+      const total = tasks.length;
+      const selesai = tasks.filter(t => t.done).length;
+      const persen = total === 0 ? 0 : Math.round((selesai / total) * 100);
+      totalEl.textContent = total;
+      selesaiEl.textContent = selesai;
+      persenEl.textContent = persen + '%';
+      progressFill.style.width = persen + '%';
+    }
+
+    function tambahTugas() {
+      const teks = inputTugas.value.trim();
+      if (!teks) { inputTugas.focus(); return; }
+      tasks.push({
+        id: Date.now(),
+        text: teks,
+        done: false,
+        important: false,
+        deadline: inputTanggal.value || ''
+      });
+      inputTugas.value = '';
+      inputTanggal.value = '';
+      inputTugas.focus();
+      renderTasks();
+    }
+
+    btnTambah.addEventListener('click', tambahTugas);
+    inputTugas.addEventListener('keydown', e => { if (e.key === 'Enter') tambahTugas(); });
+
+    list.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const taskEl = btn.closest('.task');
+      const id = Number(taskEl.dataset.id);
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      const aksi = btn.dataset.action;
+
+      if (aksi === 'toggle') { task.done = !task.done; renderTasks(); }
+      else if (aksi === 'star') { task.important = !task.important; renderTasks(); }
+      else if (aksi === 'del') { tasks = tasks.filter(t => t.id !== id); renderTasks(); }
+      else if (aksi === 'edit') { masukEditMode(taskEl, task); }
+    });
+
+    function masukEditMode(taskEl, task) {
+      const textEl = taskEl.querySelector('.task-text');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'edit-input';
+      input.value = task.text;
+      input.maxLength = 120;
+      textEl.replaceWith(input);
+      input.focus();
+      input.select();
+
+      function selesaiEdit(simpanBaru) {
+        if (simpanBaru) {
+          const baru = input.value.trim();
+          if (baru) task.text = baru;
+        }
+        renderTasks();
+      }
+
+      input.addEventListener('blur', () => selesaiEdit(true));
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); selesaiEdit(true); }
+        if (e.key === 'Escape') { e.preventDefault(); selesaiEdit(false); }
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterAktif = btn.dataset.filter;
+        renderTasks();
+      });
+    });
+
+    document.getElementById('btnHapusSelesai').addEventListener('click', () => {
+      if (tasks.filter(t => t.done).length === 0) return;
+      tasks = tasks.filter(t => !t.done);
+      renderTasks();
+    });
+
+    document.getElementById('btnHapusSemua').addEventListener('click', () => {
+      if (tasks.length === 0) return;
+      if (confirm('Yakin hapus semua tugas?')) {
+        tasks = [];
+        renderTasks();
+      }
+    });
+
+    // ================= CATATAN =================
+    const inputJudul = document.getElementById('inputJudul');
+    const inputIsi = document.getElementById('inputIsi');
+    const btnTambahCatatan = document.getElementById('btnTambahCatatan');
+    const catatanList = document.getElementById('catatanList');
+
+    document.querySelectorAll('.label-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.label-opt').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        labelAktif = btn.dataset.label;
+      });
+    });
+
+    function simpanCatatan() {
+      localStorage.setItem('catatan_k', JSON.stringify(catatan));
+    }
+
+    function renderCatatan() {
+      catatanList.innerHTML = '';
+
+      if (catatan.length === 0) {
+        catatanList.innerHTML = `
+          <div class="empty">
+            <div class="ikon">📖</div>
+            <div>Belum ada catatan.<br>Tulis jurnal, curhat, atau ide di atas! ✨</div>
+          </div>`;
+        return;
+      }
+
+      [...catatan].reverse().forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'catatan-card';
+        el.dataset.id = c.id;
+
+        const labelNama = {
+          jurnal: '📖 Jurnal',
+          curhat: '💬 Curhat',
+          ide: '💡 Ide',
+          lain: '📝 Lainnya'
+        }[c.label] || '📝 Lainnya';
+
+        el.innerHTML = `
+          <div class="catatan-head">
+            <div class="catatan-judul">${escapeHtml(c.judul)}</div>
+            <div class="catatan-label ${c.label}">${labelNama}</div>
+          </div>
+          <div class="catatan-isi">${escapeHtml(c.isi)}</div>
+          <div class="catatan-foot">
+            <div class="catatan-tgl">🕐 ${c.tgl}</div>
+            <div class="catatan-actions">
+              <button class="icon-btn" data-action="edit" title="Edit">✏️</button>
+              <button class="icon-btn del" data-action="del" title="Hapus">🗑️</button>
+            </div>
+          </div>
+        `;
+        catatanList.appendChild(el);
+      });
+    }
+
+    function tambahCatatan() {
+      const judul = inputJudul.value.trim();
+      const isi = inputIsi.value.trim();
+      if (!judul && !isi) { inputJudul.focus(); return; }
+      catatan.push({
+        id: Date.now(),
+        judul: judul || '(tanpa judul)',
+        isi: isi,
+        label: labelAktif,
+        tgl: tanggalSekarang()
+      });
+      inputJudul.value = '';
+      inputIsi.value = '';
+      inputJudul.focus();
+      renderCatatan();
+      simpanCatatan();
+      tampilToast('📝 Catatan tersimpan!');
+    }
+
+    btnTambahCatatan.addEventListener('click', tambahCatatan);
+
+    catatanList.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const card = btn.closest('.catatan-card');
+      const id = Number(card.dataset.id);
+      const c = catatan.find(x => x.id === id);
+      if (!c) return;
+
+      if (btn.dataset.action === 'del') {
+        if (confirm('Hapus catatan ini?')) {
+          catatan = catatan.filter(x => x.id !== id);
+          renderCatatan();
+          simpanCatatan();
+        }
+      } else if (btn.dataset.action === 'edit') {
+        masukEditCatatan(card, c);
+      }
+    });
+
+    function masukEditCatatan(card, c) {
+      const judulEl = card.querySelector('.catatan-judul');
+      const isiEl = card.querySelector('.catatan-isi');
+
+      const judulInput = document.createElement('input');
+      judulInput.type = 'text';
+      judulInput.className = 'edit-input';
+      judulInput.value = c.judul;
+      judulInput.maxLength = 80;
+      judulInput.style.marginBottom = '8px';
+
+      const isiInput = document.createElement('textarea');
+      isiInput.className = 'edit-input';
+      isiInput.value = c.isi;
+      isiInput.maxLength = 3000;
+      isiInput.style.minHeight = '80px';
+
+      judulEl.replaceWith(judulInput);
+      isiEl.replaceWith(isiInput);
+      judulInput.focus();
+
+      const aksiBaru = document.createElement('div');
+      aksiBaru.style.display = 'flex';
+      aksiBaru.style.gap = '8px';
+      aksiBaru.style.marginTop = '10px';
+      aksiBaru.innerHTML = `
+        <button class="btn-sekunder" id="simpanEdit" style="flex:1;">💾 Simpan</button>
+        <button class="btn-sekunder" id="batalEdit" style="flex:1;">✖ Batal</button>
+      `;
+      card.appendChild(aksiBaru);
+
+      aksiBaru.querySelector('#simpanEdit').addEventListener('click', () => {
+        const j = judulInput.value.trim() || '(tanpa judul)';
+        const i = isiInput.value.trim();
+        c.judul = j;
+        c.isi = i;
+        simpanCatatan();
+        renderCatatan();
+        tampilToast('✅ Catatan diperbarui!');
+      });
+
+      aksiBaru.querySelector('#batalEdit').addEventListener('click', () => {
+        renderCatatan();
+      });
+    }
+
+    document.getElementById('btnHapusSemuaCatatan').addEventListener('click', () => {
+      if (catatan.length === 0) return;
+      if (confirm('Yakin hapus semua catatan?')) {
+        catatan = [];
+        renderCatatan();
+        simpanCatatan();
+      }
+    });
+
+    // ================= TABUNGAN =================
+    const saldoAngka = document.getElementById('saldoAngka');
+    const saldoSub = document.getElementById('saldoSub');
+    const targetTeks = document.getElementById('targetTeks');
+    const targetFill = document.getElementById('targetFill');
+    const sisaTarget = document.getElementById('sisaTarget');
+    const inputKet = document.getElementById('inputKet');
+    const inputNominal = document.getElementById('inputNominal');
+    const btnMasuk = document.getElementById('btnMasuk');
+    const btnKeluar = document.getElementById('btnKeluar');
+    const riwayatEl = document.getElementById('riwayat');
+
+    const motivasiMasuk = [
+      '💪 Mantap! Sedikit lagi menuju target!',
+      '🔥 Keren! Tabunganmu makin tebal!',
+      '🌟 Hebat! Konsisten itu kunci!',
+      '💰 Cuan! Terus nabung ya!',
+      '🚀 Semangat! Kamu makin dekat!',
+      '✨ Good job! Uangmu berterima kasih!',
+      '🎯 Fokus! Target menanti!',
+      '💎 Keren! Disiplin membuahkan hasil!'
+    ];
+
+    const motivasiKeluar = [
+      '💸 Uang keluar, tapi nggak apa-apa — yang penting tercatat!',
+      '📝 Oke, tercatat. Ayo nabung lagi!',
+      '🙂 Sesekali pakai boleh, yang penting terkendali!',
+      '💡 Ingat targetmu ya — besok lanjut nabung!'
+    ];
+
+    function simpanNabung() {
+      localStorage.setItem('riwayat_k', JSON.stringify(riwayat));
+      localStorage.setItem('target_k', JSON.stringify(target));
+    }
+
+    function hitungSaldo() {
+      return riwayat.reduce((sum, r) => sum + r.nominal, 0);
+    }
+
+    function pilihRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // ===== GRAFIK GARIS =====
+    function renderGrafik() {
+      const svg = document.getElementById('grafikSvg');
+      const info = document.getElementById('grafikInfo');
+      const skrg = document.getElementById('grafikSkrg');
+      const saldo = hitungSaldo();
+
+      skrg.textContent = rupiah(saldo);
+
+      // hitung saldo kumulatif dari tiap transaksi
+      let kumulatif = 0;
+      const titik = [{ val: 0 }];
+      riwayat.forEach(r => {
+        kumulatif += r.nominal;
+        titik.push({ val: kumulatif });
+      });
+
+      if (riwayat.length === 0) {
+        svg.innerHTML = '';
+        info.textContent = 'Belum ada data — mulai nabung dulu! 📈';
+        return;
+      }
+
+      info.textContent = `${riwayat.length} transaksi`;
+
+      const W = 500, H = 140;
+      const padX = 8, padY = 14;
+
+      const nilaiArr = titik.map(t => t.val);
+      const maxVal = Math.max(...nilaiArr, 1);
+      const minVal = Math.min(...nilaiArr, 0);
+      const range = maxVal - minVal || 1;
+
+      const n = titik.length;
+      const stepX = n > 1 ? (W - padX * 2) / (n - 1) : 0;
+
+      const koordinat = titik.map((t, i) => {
+        const x = padX + i * stepX;
+        const y = padY + (H - padY * 2) * (1 - (t.val - minVal) / range);
+        return { x, y };
+      });
+
+      // garis path
+      let pathD = '';
+      koordinat.forEach((k, i) => {
+        if (i === 0) pathD += `M ${k.x} ${k.y}`;
+        else pathD += ` L ${k.x} ${k.y}`;
+      });
+
+      // area path (ke bawah)
+      const areaD = pathD + ` L ${koordinat[koordinat.length - 1].x} ${H - padY} L ${koordinat[0].x} ${H - padY} Z`;
+
+      // titik-titik (maksimal 20 terakhir biar nggak penuh)
+      const titikTampil = koordinat.slice(-20);
+
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--grafik-area-1)"/>
+            <stop offset="100%" stop-color="var(--grafik-area-2)"/>
+          </linearGradient>
+        </defs>
+        <path d="${areaD}" fill="url(#gradArea)"/>
+        <path d="${pathD}" fill="none" stroke="var(--grafik-garis)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${titikTampil.map(k => `<circle cx="${k.x}" cy="${k.y}" r="3" fill="var(--grafik-garis)" stroke="var(--card-bg)" stroke-width="1.5"/>`).join('')}
+      `;
+    }
+
+    function renderNabung() {
+      const saldo = hitungSaldo();
+      saldoAngka.textContent = rupiah(saldo);
+
+      if (riwayat.length === 0) {
+        saldoSub.textContent = 'Belum ada tabungan. Yuk mulai! 🌱';
+      } else {
+        const masuk = riwayat.filter(r => r.nominal > 0).length;
+        const keluar = riwayat.filter(r => r.nominal < 0).length;
+        saldoSub.textContent = `${masuk} setoran • ${keluar} penarikan`;
+      }
+
+      if (target && target.nominal > 0) {
+        targetTeks.textContent = `${target.nama} (${rupiah(saldo)} / ${rupiah(target.nominal)})`;
+        const p = Math.min(100, Math.max(0, (saldo / target.nominal) * 100));
+        targetFill.style.width = p + '%';
+
+        const sisa = target.nominal - saldo;
+        if (sisa > 0) {
+          sisaTarget.textContent = `📊 Sisa ${rupiah(sisa)} lagi menuju target!`;
+          sisaTarget.classList.remove('tercapai');
+          targetFill.style.background = '';
+        } else {
+          sisaTarget.textContent = `🎉 Target tercapai! Selamat! 🎉`;
+          sisaTarget.classList.add('tercapai');
+          targetFill.style.background = 'linear-gradient(90deg, var(--hijau), #7dffa0)';
+        }
+      } else {
+        targetTeks.textContent = 'Belum diset';
+        targetFill.style.width = '0%';
+        sisaTarget.textContent = '';
+        sisaTarget.classList.remove('tercapai');
+      }
+
+      riwayatEl.innerHTML = '';
+      if (riwayat.length === 0) {
+        riwayatEl.innerHTML = `
+          <div class="empty">
+            <div class="ikon">🪙</div>
+            <div>Belum ada riwayat.<br>Mulai nabung di atas! 💰</div>
+          </div>`;
+      } else {
+        [...riwayat].reverse().forEach(r => {
+          const el = document.createElement('div');
+          el.className = 'riwayat-item';
+          el.dataset.id = r.id;
+          const masuk = r.nominal > 0;
+          el.innerHTML = `
+            <div class="riwayat-ikon ${masuk ? 'masuk' : 'keluar'}">${masuk ? '↓' : '↑'}</div>
+            <div class="riwayat-info">
+              <div class="riwayat-ket">${escapeHtml(r.ket || (masuk ? 'Setoran' : 'Penarikan'))}</div>
+              <div class="riwayat-tgl">${r.tgl}</div>
+            </div>
+            <div class="riwayat-nominal ${masuk ? 'masuk' : 'keluar'}">${masuk ? '+' : '-'}${rupiah(r.nominal)}</div>
+            <button class="riwayat-del" data-id="${r.id}" title="Hapus">✕</button>
+          `;
+          riwayatEl.appendChild(el);
+        });
+      }
+
+      renderGrafik();
+      simpanNabung();
+    }
+
+    function tambahRiwayat(nominal, ket) {
+      if (!nominal || nominal <= 0) return;
+      const sekarang = new Date();
+      const tgl = sekarang.toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      }) + ' ' + sekarang.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      riwayat.push({
+        id: Date.now(),
+        nominal: nominal,
+        ket: ket || (nominal > 0 ? 'Setoran' : 'Penarikan'),
+        tgl: tgl
+      });
+      renderNabung();
+    }
+
+    btnMasuk.addEventListener('click', () => {
+      const nominal = Math.floor(Number(inputNominal.value));
+      if (!nominal || nominal <= 0) { inputNominal.focus(); return; }
+      tambahRiwayat(nominal, inputKet.value.trim() || 'Setoran');
+      inputNominal.value = '';
+      inputKet.value = '';
+      inputNominal.focus();
+      tampilToast(pilihRandom(motivasiMasuk));
+    });
+
+    btnKeluar.addEventListener('click', () => {
+      const nominal = Math.floor(Number(inputNominal.value));
+      if (!nominal || nominal <= 0) { inputNominal.focus(); return; }
+      const saldo = hitungSaldo();
+      if (nominal > saldo) {
+        tampilToast('❌ Saldo nggak cukup! Saldo kamu: ' + rupiah(saldo), true);
+        return;
+      }
+      tambahRiwayat(-nominal, inputKet.value.trim() || 'Penarikan');
+      inputNominal.value = '';
+      inputKet.value = '';
+      inputNominal.focus();
+      tampilToast(pilihRandom(motivasiKeluar), true);
+    });
+
+    riwayatEl.addEventListener('click', e => {
+      const btn = e.target.closest('.riwayat-del');
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+      if (confirm('Hapus riwayat ini?')) {
+        riwayat = riwayat.filter(r => r.id !== id);
+        renderNabung();
+      }
+    });
+
+    // ================= MODAL TARGET =================
+    const modalBg = document.getElementById('modalBg');
+    const modalNamaTarget = document.getElementById('modalNamaTarget');
+    const modalNominalTarget = document.getElementById('modalNominalTarget');
+    const btnEditTarget = document.getElementById('btnEditTarget');
+    const btnBatalTarget = document.getElementById('btnBatalTarget');
+    const btnSimpanTarget = document.getElementById('btnSimpanTarget');
+
+    btnEditTarget.addEventListener('click', () => {
+      modalNamaTarget.value = target ? target.nama : '';
+      modalNominalTarget.value = target ? target.nominal : '';
+      modalBg.classList.add('show');
+      modalNamaTarget.focus();
+    });
+
+    btnBatalTarget.addEventListener('click', () => {
+      modalBg.classList.remove('show');
+    });
+
+    modalBg.addEventListener('click', e => {
+      if (e.target === modalBg) modalBg.classList.remove('show');
+    });
+
+    btnSimpanTarget.addEventListener('click', () => {
+      const nama = modalNamaTarget.value.trim() || 'Target Tabungan';
+      const nominal = Math.floor(Number(modalNominalTarget.value));
+      if (!nominal || nominal <= 0) { modalNominalTarget.focus(); return; }
+      target = { nama, nominal };
+      modalBg.classList.remove('show');
+      renderNabung();
+      tampilToast('🎯 Target diset: ' + nama);
+    });
+
+    // ================= HITUNG MUNDUR =================
+    const inputCdNama = document.getElementById('inputCdNama');
+    const inputCdTgl = document.getElementById('inputCdTgl');
+    const btnTambahCd = document.getElementById('btnTambahCd');
+    const countdownList = document.getElementById('countdownList');
+
+    function simpanCountdown() {
+      localStorage.setItem('countdown_k', JSON.stringify(countdown));
+    }
+
+    function hitungSisa(targetMs) {
+      const now = Date.now();
+      const selisih = targetMs - now;
+      if (selisih <= 0) return null;
+      const totalMenit = Math.floor(selisih / 60000);
+      const hari = Math.floor(totalMenit / (60 * 24));
+      const jam = Math.floor((totalMenit % (60 * 24)) / 60);
+      const menit = totalMenit % 60;
+      return { hari, jam, menit };
+    }
+
+    function renderCountdown() {
+      countdownList.innerHTML = '';
+
+      if (countdown.length === 0) {
+        countdownList.innerHTML = `
+          <div class="empty">
+            <div class="ikon">🎂</div>
+            <div>Belum ada hitung mundur.<br>Tambahkan event di atas! ✨</div>
+          </div>`;
+        return;
+      }
+
+      // urutkan: yang belum lewat dulu, lalu terdekat
+      const urut = [...countdown].sort((a, b) => {
+        const sa = new Date(a.target).getTime() - Date.now();
+        const sb = new Date(b.target).getTime() - Date.now();
+        const aLewat = sa <= 0, bLewat = sb <= 0;
+        if (aLewat !== bLewat) return aLewat ? 1 : -1;
+        return sa - sb;
+      });
+
+      urut.forEach(c => {
+        const targetMs = new Date(c.target).getTime();
+        const sisa = hitungSisa(targetMs);
+        const el = document.createElement('div');
+        el.className = 'cd-card' + (sisa === null ? ' lewat' : '');
+        el.dataset.id = c.id;
+
+        const tglTampil = new Date(c.target).toLocaleDateString('id-ID', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        }) + ' • ' + new Date(c.target).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+        let isiHtml = '';
+        if (sisa === null) {
+          isiHtml = `<div class="cd-lewat-teks">🎉 Udah lewat!</div>`;
+        } else {
+          isiHtml = `
+            <div class="cd-angka">
+              <div class="cd-blok">
+                <div class="cd-num">${sisa.hari}</div>
+                <div class="cd-lbl">Hari</div>
+              </div>
+              <div class="cd-blok">
+                <div class="cd-num">${sisa.jam}</div>
+                <div class="cd-lbl">Jam</div>
+              </div>
+              <div class="cd-blok">
+                <div class="cd-num">${sisa.menit}</div>
+                <div class="cd-lbl">Menit</div>
+              </div>
+            </div>
+          `;
+        }
+
+        el.innerHTML = `
+          <button class="cd-del" data-id="${c.id}" title="Hapus">✕</button>
+          <div class="cd-nama">${escapeHtml(c.nama)}</div>
+          <div class="cd-tgl">📅 ${tglTampil}</div>
+          ${isiHtml}
+        `;
+        countdownList.appendChild(el);
+      });
+    }
+
+    btnTambahCd.addEventListener('click', () => {
+      const nama = inputCdNama.value.trim();
+      const tgl = inputCdTgl.value;
+      if (!nama) { inputCdNama.focus(); return; }
+      if (!tgl) { inputCdTgl.focus(); return; }
+      countdown.push({
+        id: Date.now(),
+        nama: nama,
+        target: tgl
+      });
+      inputCdNama.value = '';
+      inputCdTgl.value = '';
+      inputCdNama.focus();
+      renderCountdown();
+      simpanCountdown();
+      tampilToast('🎂 Hitung mundur ditambah!');
+    });
+
+    countdownList.addEventListener('click', e => {
+      const btn = e.target.closest('.cd-del');
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+      if (confirm('Hapus hitung mundur ini?')) {
+        countdown = countdown.filter(c => c.id !== id);
+        renderCountdown();
+        simpanCountdown();
+      }
+    });
+
+    // update tiap menit
+    setInterval(renderCountdown, 60000);
+
+    // ================= TAB & SUB MENU =================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.sub-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const sub = btn.dataset.sub;
+        document.querySelectorAll('.sub-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('sub-' + sub).classList.add('active');
+      });
+    });
+
+    // ================= MODE =================
+    const modeBtn = document.getElementById('modeBtn');
+    const html = document.documentElement;
+
+    const savedMode = localStorage.getItem('mode');
+    if (savedMode === 'light') {
+      html.classList.add('light');
+      modeBtn.textContent = '☀️';
+    }
+
+    modeBtn.addEventListener('click', () => {
+      html.classList.toggle('light');
+      const isLight = html.classList.contains('light');
+      modeBtn.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('mode', isLight ? 'light' : 'dark');
+    });
+
+    // ================= MULAI =================
+    renderTasks();
+    renderCatatan();
+    renderNabung();
+    renderCountdown();
+  </script>
+</body>
+</html>
